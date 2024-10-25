@@ -4,6 +4,7 @@
     <title><%= content_for(:title) || "Marketplace" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+      <script src="https://cdn.tailwindcss.com"></script>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -17,7 +18,14 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
+  <body>      
+    <%= render 'shared/nav' %>
+    <% if notice %>
+      <p class="alert alert-success"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>
