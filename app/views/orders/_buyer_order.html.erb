@@ -1,0 +1,43 @@
+<div class="bg-white shadow-md rounded-lg p-6">
+        <!-- Buyer's Profile Image & Name -->
+        <div class="flex items-center space-x-4 mb-4">
+          <% profile_user = order.product.user %>
+          <div class="w-12 h-12">
+            <% if profile_user.image.attached? %>
+              <%= image_tag profile_user.image, class: "w-12 h-12 rounded-full object-cover" %>
+            <% else %>
+              <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-lg font-semibold text-white">
+                <%= profile_user.email[0].upcase %>
+              </div>
+            <% end %>
+          </div>
+          <span class="text-gray-800 font-semibold"><%= profile_user.email.split('@').first.capitalize %></span>
+        </div>
+
+        <!-- Order Details for Buyer -->
+        <div class="flex items-center space-x-4">
+          <!-- Product Image -->
+          <div class="flex-shrink-0">
+            <% if order.product.image.attached? %>
+              <%= image_tag order.product.image, class: "w-20 h-20 object-cover rounded-lg" %>
+            <% else %>
+              <div class="w-20 h-20 bg-gray-200 rounded-lg"></div>
+            <% end %>
+          </div>
+
+          <!-- Order Information -->
+          <div class="ml-4 flex-grow">
+            <p class="text-gray-700 mb-2">
+              You've placed an order for <span class="font-semibold"><%= order.product.name %></span>.
+            </p>
+            <div class="flex space-x-2 items-center">
+              <span class="<%= status_color_class(order.status) %> font-semibold"><%= order.status.capitalize %></span>
+              <%= button_to cancel_order_path(order), method: :delete, class: "bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 transition", data: { turbo_confirm: "Are you sure you want to cancel this order?" } do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg> Cancel
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>

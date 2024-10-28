@@ -1,0 +1,23 @@
+<div class="max-w-4xl mx-auto space-y-6">
+  <!-- Buyer's Orders Section -->
+  <% if @orders_as_buyer.any? %>
+    <h2 class="text-2xl font-semibold">Your Orders</h2>
+    <% @orders_as_buyer.each do |order| %>
+      <% next if order.status == "cancelled" || order.status == "confirmed" %> <!-- Skip cancelled and confirmed orders for the buyer -->
+        <%= render "buyer_order", order: order %>
+    <% end %>
+  <% else %>
+    <p>No orders placed as a buyer.</p>
+  <% end %>
+
+  <!-- Owner's Orders Section -->
+  <% if @orders_as_owner.any? %>
+    <h2 class="text-2xl font-semibold">Orders for Your Products</h2>
+    <% @orders_as_owner.each do |order| %>
+      <% next if order.status == "cancelled" || order.status == "confirmed" %> <!-- Skip cancelled and confirmed orders for the owner -->
+        <%=render "owner_order", order: %>
+    <% end %>
+  <% else %>
+    <p>No orders available for your products.</p>
+  <% end %>
+</div>

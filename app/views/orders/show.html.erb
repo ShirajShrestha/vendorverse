@@ -1,0 +1,55 @@
+<div class="max-w-4xl mx-auto space-y-6">
+  <!-- Confirmed and Canceled Orders as Buyer -->
+  <h2 class="text-2xl font-semibold">Your Past Orders</h2>
+  
+  <% if @confirmed_orders_as_buyer.any? || @canceled_orders_as_buyer.any? %>
+    <div class="space-y-4">
+      <% @confirmed_orders_as_buyer.each do |order| %>
+        <%= turbo_frame_tag "order_#{order.id}" do %>
+          <div class="bg-white shadow-md rounded-lg p-4">
+            <p class="text-green-600 font-semibold">Confirmed: <%= order.product.name %></p>
+            <%= button_to 'Cancel', cancel_order_path(order), method: :delete, data: { turbo_frame: "order_#{order.id}" }, class: "text-red-500 font-bold" %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% @canceled_orders_as_buyer.each do |order| %>
+        <%= turbo_frame_tag "order_#{order.id}" do %>
+          <div class="bg-white shadow-md rounded-lg p-4">
+            <p class="text-red-600 font-semibold">Canceled: <%= order.product.name %></p>
+            <%= button_to 'Confirm', confirm_order_path(order), method: :patch, data: { turbo_frame: "order_#{order.id}" }, class: "text-green-500 font-bold" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No past orders.</p>
+  <% end %>
+
+  <!-- Confirmed and Canceled Orders as Owner -->
+  <h2 class="text-2xl font-semibold">Past Orders for Your Products</h2>
+  
+  <% if @confirmed_orders_as_owner.any? || @canceled_orders_as_owner.any? %>
+    <div class="space-y-4">
+      <% @confirmed_orders_as_owner.each do |order| %>
+        <%= turbo_frame_tag "order_#{order.id}" do %>
+          <div class="bg-white shadow-md rounded-lg p-4">
+            <p class="text-green-600 font-semibold">Confirmed Sale: <%= order.product.name %></p>
+            <%= button_to 'Cancel', cancel_order_path(order), method: :delete, data: { turbo_frame: "order_#{order.id}" }, class: "text-red-500 font-bold" %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% @canceled_orders_as_owner.each do |order| %>
+        <%= turbo_frame_tag "order_#{order.id}" do %>
+          <div class="bg-white shadow-md rounded-lg p-4">
+            <p class="text-red-600 font-semibold">Canceled Sale: <%= order.product.name %></p>
+            <%= button_to 'Confirm', confirm_order_path(order), method: :patch, data: { turbo_frame: "order_#{order.id}" }, class: "text-green-500 font-bold" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No past sales for your products.</p>
+  <% end %>
+</div>

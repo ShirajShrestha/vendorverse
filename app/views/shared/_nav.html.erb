@@ -13,7 +13,8 @@
           <a href="<%= new_user_registration_path %>" class="text-gray-700 hover:text-fuchsia-600">Sign Up</a>
         <% else %>
           <a href="/" class="text-gray-700 hover:text-fuchsia-600">Home</a>
-          <a href="/cart" class="text-gray-700 hover:text-fuchsia-600">Cart</a>
+          <%= link_to "Activities", order_path(current_user), class:"text-gray-700 hover:text-fuchsia-600" %>
+          <%= link_to "Orders", orders_path, class:"text-gray-700 hover:text-fuchsia-600" %>
           <!-- Add Product Button -->
           <%= link_to 'Add Product', new_product_path, class: "text-white bg-fuchsia-600 hover:bg-fuchsia-700 py-2 px-4 rounded-full shadow-md transition ease-in-out duration-300" %>
 
@@ -40,7 +41,7 @@
 
       <!-- Mobile Menu Button -->
       <div class="flex md:hidden">
-        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')", class="text-gray-500 hover:text-gray-700 focus:outline-none">
           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
@@ -57,7 +58,8 @@
         <a href="<%= new_user_registration_path %>" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Sign Up</a>
       <% else %>
         <a href="/" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">Home</a>
-        <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">My orders</a>
+        <%= link_to "Activities", order_path(current_user), class:"block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100"  %>
+        <%= link_to "Orders", orders_path, class:"block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100"  %>
         <!-- Add Product Button in Mobile Menu -->
         <%= link_to 'Add Product', new_product_path, class: "text-white bg-fuchsia-600 hover:bg-fuchsia-700 py-2 px-4 rounded-full shadow-md transition ease-in-out duration-300" %>
 

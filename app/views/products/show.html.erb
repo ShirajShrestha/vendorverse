@@ -1,0 +1,67 @@
+<div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+  <!-- Flash Messages -->
+  <% flash.each do |key, message| %>
+    <div class="max-w-4xl mx-auto mt-4">
+      <div class="bg-<%= key == 'notice' ? 'green' : 'red' %>-100 border-l-4 border-<%= key == 'notice' ? 'green' : 'red' %>-500 text-<%= key == 'notice' ? 'green' : 'red' %>-700 p-4" role="alert">
+        <p class="font-bold"><%= message %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Product Image -->
+  <div class="w-full h-96 bg-gray-100 rounded-lg overflow-hidden mb-6">
+    <img src="<%= url_for(@product.image) %>" alt="<%= @product.name %>" class="w-full h-full object-cover object-center">
+  </div>
+
+  <!-- Product Details -->
+  <div class="px-4 sm:px-8 lg:px-12">
+    <!-- Product Name and Remove Button -->
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-3xl font-bold text-gray-900"><%= @product.name %></h1>
+
+      <!-- Remove Product Button (only for owner) -->
+      <% if current_user == @product.user %>
+        <%= link_to product_path(@product), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove this product?" }, class: "text-red-600 hover:text-red-800 transition" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M9 6v12m6-12v12m-7 5h8a2 2 0 002-2V7H5v11a2 2 0 002 2zM10 4h4a2 2 0 012 2H8a2 2 0 012-2z"/>
+          </svg>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Category, Price, and Status -->
+    <div class="flex items-center text-sm mb-4 space-x-4">
+      <!-- Category -->
+      <span class="px-3 py-1 bg-purple-100 rounded-full text-purple-700 font-medium">
+        <%= @product.category %>
+      </span>
+
+      <!-- Price -->
+      <span class="text-xl font-semibold text-green-600">$<%= @product.price %></span>
+
+      <!-- Status -->
+      <span class="px-3 py-1 rounded-full font-medium <%= @product.sold ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' %>">
+        <%= @product.sold ? 'Sold' : 'Available' %>
+      </span>
+    </div>
+
+    <!-- Description -->
+    <p class="text-gray-700 leading-relaxed mb-6">
+      <%= @product.description %>
+    </p>
+
+    <!-- Styled Order Button -->
+    <% if current_user != @product.user%>
+      <%= turbo_frame_tag "product_#{@product.id}_order" do %>
+        <% if current_user.orders.exists?(product: @product, status: "pending") %>
+          <% order = current_user.orders.where(product: @product).last %>
+          <%= button_to 'Cancel Order', cancel_order_path(order), method: :delete, data: { turbo_frame: "product_#{@product.id}_order"}, class: "cancel-button-class block w-full md:w-auto text-center px-8 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white font-bold rounded-full shadow-xl cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ease-out" %>
+        <% else %>
+          <% unless @product.sold %>
+            <%= button_to 'Order Now', orders_path(product_id: @product.id), method: :post, data: { turbo_frame: "product_#{@product.id}_order" }, class: "order-button-class block w-full md:w-auto text-center px-8 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white font-bold rounded-full shadow-xl cursor-pointer hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ease-out" %>
+          <% end %>
+        <% end %>
+      <% end %> 
+    <% end %>
+  </div>
+</div>
